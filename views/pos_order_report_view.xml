@@ -53,7 +53,7 @@
     </record>
     
     <record id="urbanextra_point_of_sale_report_action_dashboard" model="ir.actions.act_window">
-            <field name="name">urbanextra.urban_Dashboard</field>
+            <field name="name">Urban Dashboard</field>
             <field name="res_model">report.pos.order</field>
             <field name="view_mode">dashboard</field>
             <field name="search_view_id" ref="ubanextra_view_order_product_search"/>
