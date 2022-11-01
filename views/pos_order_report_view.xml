@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    
+    <record id="urbanextra_view_pos_product_graph" model="ir.ui.view">
+         <field name="name">.urbanextrareport.pos.order.graph</field>
+         <field name="model">report.pos.order</field>
+         <field name="arch" type="xml">
+             <graph string="POS Analysis" type="bar" sample="1">               
+                 <field name="date" interval="day"/>
+                 <field name="price_total" type="measure" string="Precio Total" />
+             </graph>
+         </field>
+    </record>
+    
+    <record id="urbanextra_pos_report_view_dashboard" model="ir.ui.view">
+            <field name="name">urbanextra.pos.report.view.dashboard</field>
+            <field name="model">report.pos.order</field>
+            <field name="mode">primary</field>
+            <field name="arch" type="xml">
+                <dashboard sample="1">
+                    <view type="graph" ref="urbanextra_view_pos_product_graph"/>
+                    <group>
+                        <aggregate name="price_subtotal_confirmed_orders" string="Venta Total" field="price_subtotal_incl" help="Total, Tax Included" widget="monetary"/>
+                            <aggregate name="margen" string="Margen sin descuento" field="margin" widget="monetary"/>
+                            <aggregate name="total_dto" string="Total Descuento" field="total_discount" />
+                            <formula name="beneficio" string="Beneficio" value="record.margen - record.total_dto" widget="monetary"/>
+                            <aggregate name="total_qty_invoiced" field="product_qty" string="Unidades Vendidas"/>
+                            <aggregate name="total_dias" field="fecha_numerico" string="# Dias" group_operator="count_distinct" />
+                            <aggregate name="order_id_confirmed_orders" field="order_id" string="#Tickets"/>
+                            <aggregate name="customers" string="# Clientes" field="partner_id" clickable="False"/>
+                            <formula name="tckprom" string="Ticket Promedio" value="record.price_subtotal_confirmed_orders / record.order_id_confirmed_orders" widget="monetary" />
+                            <formula name="totalUTck" string="Unidades por Ticket" value="record.total_qty_invoiced / record.order_id_confirmed_orders" />
+                            <formula name="ValPrcProm" string="Precio Promedio" value="record.price_subtotal_confirmed_orders/ record.total_qty_invoiced" widget="monetary"/>
+                         <formula name="ValPrmdiario" string="Promedio Venta Diaria" value="record.price_subtotal_confirmed_orders/ record.total_dias" widget="monetary"/>
+                    <group col="2">
+                        <widget name="pie_chart" title="Sales Teams" attrs="{'groupby': 'employee_id'}"/>
+                    </group>
+                    </group>
+                </dashboard>
+            </field>
+    </record>
+    <record id="ubanextra_view_order_product_search" model="ir.ui.view">
+        <field name="name">urbanextra.report_pos_order.search</field>
+        <field name="model">report.pos.order</field>
+        <field name="arch" type="xml">
+            <search string="Sales Analysis">
+                <field name="date"/>
+                <group expand="1" string="Group By">
+                    <filter string="Order Date" name="order_month" default_period="this_month" context="{'group_by':'date:month'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+    
+    <record id="urbanextra_point_of_sale_report_action_dashboard" model="ir.actions.act_window">
+            <field name="name">urbanextra.urban_Dashboard</field>
+            <field name="res_model">report.pos.order</field>
+            <field name="view_mode">dashboard</field>
+            <field name="search_view_id" ref="ubanextra_view_order_product_search"/>
+            <field name="context">{'search_default_order_month': 1}</field>
+    </record>   
+   
+    <record id="view_report_pos_order_search_urban" model="ir.ui.view">
+            <field name="name">report.pos.order.search</field>
+            <field name="model">report.pos.order</field>
+            <field name="arch" type="xml">
+                <search string="Point of Sale Analysis">
+                    <field name="date"/>
+                    <separator/>
+                    <filter string="Invoiced" name="invoiced" domain="[('state','=',('invoiced'))]"/>
+                    <filter string="Not Invoiced" name="not_invoiced" domain="[('state','=',('paid'))]"/>
+                    <separator/>
+                    <filter name="filter_date" date="date"/>
+                    <field name="config_id"/>
+                    <field name="partner_id"/>
+                    <field name="product_id"/>
+                    <field name="product_categ_id"/>
+                    <field name="default_code"/>
+                    <group expand="1" string="Group By">
+                        <filter string="User" name="User" context="{'group_by':'user_id'}"/>
+                        <filter string="Point of Sale" name="pos" context="{'group_by':'config_id'}"/>
+                        <filter string="Product" name="product" context="{'group_by':'product_id'}"/>
+                        <filter string="Product Category" name="product_category" context="{'group_by':'product_categ_id'}"/>
+                        <separator/>
+                        <filter string="Order Date" name="order_month" context="{'group_by':'date:month'}"/>
+                    </group>
+                </search>
+            </field>
+    </record>
+    <record id="urban_report_pos_order_view_tree" model="ir.ui.view">
+      <field name="name">report.pos.order.view.tree</field>
+      <field name="model">report.pos.order</field>
+      <field name="arch" type="xml">
+          <tree string="Point of Sale Analysis">
+              <field name="product_id" optional="show"/>
+              <!-- <field name="attribute_id" optional="show"/> -->
+              <field name="date" widget="date"/>
+              <field name="order_id" optional="hide"/>
+              <field name="account_move" optional="show"/>
+              <field name="invoice_user_id" optional="show"/>
+              <field name="partner_id" optional="hide"/>
+              <field name="default_code" optional="show"/>
+              <field name="name" optional="show"/>
+              <field name="product_qty" optional="show"/>
+              <field name="fecha_numerico" optional="show"/>
+              <field name="price_total" optional="show"/>
+              <field name="price_subtotal_incl" optional="show"/>              
+              <field name="price_sub_total" optional="show"/>
+              <field name="total_discount" optional="show"/>
+              <field name="margin" optional="show"/>
+              <field name="product_categ_id" optional="show"/>
+              <field name="config_id" optional="hide"/>
+              <field name="company_id" optional="show" groups="base.group_multi_company"/>
+              <field name="state" optional="show"/>
+              
+          </tree>
+      </field>
+  </record>
+    <record id="action_report_pos_details_urban" model="ir.actions.act_window">
+            <field name="name">Sales Details Urban</field>
+            <field name="res_model">report.pos.order</field>
+            <field name="view_mode">tree</field>
+            <field name="search_view_id" ref="view_report_pos_order_search_urban"/>
+            <field name="view_id" ref="urban_report_pos_order_view_tree"/>
+            <field name="context">{'search_default_order_month': 1}</field>
+    </record>
+    
+    
+    <menuitem id="menu_report_order_urban_detail" name="Detalle Pedidos" action="action_report_pos_details_urban" 
+parent="point_of_sale.menu_point_rep" sequence="10"/>
+    
+     <menuitem id="menu_report_order_urban_dashboard" name="Tablero Urban" action="urbanextra_point_of_sale_report_action_dashboard" 
+parent="point_of_sale.menu_point_rep" sequence="50"/>
+</odoo>
