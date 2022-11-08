@@ -39,18 +39,6 @@
                 </dashboard>
             </field>
     </record>
-    <record id="ubanextra_view_order_product_search" model="ir.ui.view">
-        <field name="name">urbanextra.report_pos_order.search</field>
-        <field name="model">report.pos.order</field>
-        <field name="arch" type="xml">
-            <search string="Sales Analysis">
-                <field name="date"/>
-                <group expand="1" string="Group By">
-                    <filter string="Order Date" name="order_month" default_period="this_month" context="{'group_by':'date:month'}"/>
-                </group>
-            </search>
-        </field>
-    </record>
     
     <record id="urbanextra_point_of_sale_report_action_dashboard" model="ir.actions.act_window">
             <field name="name">Urban Dashboard</field>
@@ -60,8 +48,8 @@
             <field name="context">{'search_default_order_month': 1}</field>
     </record>   
    
-    <record id="view_report_pos_order_search_urban" model="ir.ui.view">
-            <field name="name">report.pos.order.search</field>
+    <record id="ubanextra_view_order_product_search" model="ir.ui.view">
+            <field name="name">urbanextra.report.pos.order.search</field>
             <field name="model">report.pos.order</field>
             <field name="arch" type="xml">
                 <search string="Point of Sale Analysis">
@@ -97,7 +85,6 @@
               <field name="date" widget="date"/>
               <field name="order_id" optional="hide"/>
               <field name="account_move" optional="show"/>
-              <field name="invoice_user_id" optional="show"/>
               <field name="partner_id" optional="hide"/>
               <field name="default_code" optional="show"/>
               <field name="name" optional="show"/>
@@ -120,7 +107,7 @@
             <field name="name">Sales Details Urban</field>
             <field name="res_model">report.pos.order</field>
             <field name="view_mode">tree</field>
-            <field name="search_view_id" ref="view_report_pos_order_search_urban"/>
+            <field name="search_view_id" ref="ubanextra_view_order_product_search"/>
             <field name="view_id" ref="urban_report_pos_order_view_tree"/>
             <field name="context">{'search_default_order_month': 1}</field>
     </record>

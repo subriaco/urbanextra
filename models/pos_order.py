@@ -7,6 +7,4 @@ from odoo import api, fields, models, tools, _
 class PosOrder(models.Model):
     _inherit = "pos.order"
     
-    info_extra = fields.Char(string='Info Extra')
-    invoice_user_id = fields.Many2one('res.users', string='Vendedor', readonly=True, related='account_move.invoice_user_id')
-    
+    info_extra = fields.Char(string='Info Extra') 
