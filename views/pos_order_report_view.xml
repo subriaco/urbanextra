@@ -46,7 +46,7 @@
             <field name="res_model">report.pos.order</field>
             <field name="view_mode">dashboard</field>
             <field name="search_view_id" ref="ubanextra_view_order_product_search"/>
-            <field name="context">{'search_default_order_month': 1}</field>
+            <field name="context">{'search_default_order_month': 1, 'search_default_current_month':1}</field>
     </record>   
    
     <record id="ubanextra_view_order_product_search" model="ir.ui.view">
@@ -111,7 +111,7 @@
             <field name="view_mode">tree</field>
             <field name="search_view_id" ref="ubanextra_view_order_product_search"/>
             <field name="view_id" ref="urban_report_pos_order_view_tree"/>
-            <field name="context">{'search_default_order_month': 1, 'search_default_current_month':1}</field>
+            <field name="context">{'search_default_order_month': 1 }</field>
     </record>
     
     
