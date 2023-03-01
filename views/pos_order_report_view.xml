@@ -59,7 +59,6 @@
                     <filter string="Invoiced" name="invoiced" domain="[('state','=',('invoiced'))]"/>
                     <filter string="Not Invoiced" name="not_invoiced" domain="[('state','=',('paid'))]"/>
                     <separator/>
-                    
                     <filter name="filter_date" date="date" />
                     <filter string="Current Month" name="current_month" domain="[('date','&lt;',(context_today()+relativedelta(months=1)).strftime('%Y-%m-%d')),('date','&gt;=',time.strftime('%Y-%m-01'))]"/>
                     <field name="config_id"/>
